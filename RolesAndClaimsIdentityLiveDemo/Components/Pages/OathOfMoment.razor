@@ -1,0 +1,62 @@
+﻿@page "/OathOfMoment"
+@using Microsoft.AspNetCore.Authorization
+@using RolesAndClaimsIdentityLiveDemo.Components.Account
+@using RolesAndClaimsIdentityLiveDemo.Data
+@using System.CodeDom
+@inject IdentityUserAccessor UserAccessor
+@rendermode @(new InteractiveServerRenderMode(false))
+
+@attribute [Authorize(Roles = "Emperor")]
+<h3>OathOfMoment</h3>
+<ul class="list-group">
+	<Virtualize Items="ApplicationUsers">
+		<li class="list-group-item card">
+			<div class="card-header">@context.UserName</div>
+			<div class="card-body">
+				<button class="btn btn-secondary" @onclick="() => MakeEmperor(context)">
+					Make Emperor
+				</button>
+				<button class="btn btn-secondary" @onclick="() => MakeSpaceMarine(context)">
+					Make SpaceMarine
+				</button>
+			</div>
+		</li>
+	</Virtualize>
+</ul>
+
+@code {
+
+	public List<ApplicationUser> ApplicationUsers { get; set; } = new List<ApplicationUser>();
+
+	public ApplicationUserRole Emperor { get; set; }
+	public ApplicationUserRole SpaceMarine { get; set; }
+
+	[CascadingParameter]
+	private HttpContext HttpContext { get; set; } = default!;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		await base.OnAfterRenderAsync(firstRender);
+
+		if (firstRender)
+		{
+			var users = await UserAccessor.GetUsersAsync(HttpContext);
+
+			ApplicationUsers.AddRange(users);
+			//TODO: Hämta rollerna "Emperor" och "SpaceMarine"
+			StateHasChanged();
+		}
+	}
+
+	private void MakeEmperor(ApplicationUser user)
+	{
+		//TODO: Lägg till rollen SpaceMarine 
+		throw new NotImplementedException();
+	}
+
+	private void MakeSpaceMarine(ApplicationUser user)
+	{
+		//TODO: Lägg till rollen SpaceMarine 
+		throw new NotImplementedException();
+	}
+}

@@ -16,5 +16,11 @@ namespace RolesAndClaimsIdentityLiveDemo.Components.Account
 
 			return user;
 		}
+
+		public async Task<IEnumerable<ApplicationUser>> GetUsersAsync(HttpContext httpContext)
+		{
+			//TODO: Implementera metoden för att hämta alla användare som inte är "Emperor"
+			throw new NotImplementedException();
+		}
 	}
 }
